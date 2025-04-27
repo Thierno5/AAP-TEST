@@ -1,0 +1,26 @@
+---
+- name: installing php and mariadb packages
+  hosts: dev,test,prod
+  become: true
+  tasks:
+    - name: installing php and mariadb
+      ansible.builtin.dnf:
+        name: "{{item}}"
+        state: latest 
+      loop:
+        - php
+        - mariadb
+    - name: istallin rpm development tools 
+      ansible.builtin.dnf:
+        name: '@rpm development tools'
+        state: latest
+      when: inventory_hostname in groups ['dev']
+    - name: update all packages 
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest 
+      when: inventory_hostname in groups ['dev']
+
+        
+      
+
